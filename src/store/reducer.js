@@ -9,18 +9,17 @@ const initialState = {
         case ADD_INVOICE:
           return { ...state, invoices: [...state.invoices, action.payload] };
         case UPDATE_INVOICE:
+          const newEditedInvoices = state.invoices.map((invoice) =>
+            invoice.invoiceId === action.payload.id ? action.payload.updatedInvoice : invoice
+          );
           return {
             ...state,
-            invoices: state.invoices.map((invoice) =>
-              invoice.id === action.payload.id ? action.payload.updatedInvoice : invoice
-            ),
+            invoices: newEditedInvoices,
           };
         case DELETE_INVOICE:
-          console.log('DELETE_INVOICE in reducer:', action.payload);
           const newInvoices = state.invoices.filter(
             (invoice) => invoice.invoiceId !== action.payload
           );
-          console.log('New invoices:', newInvoices);
           return {
             ...state,
             invoices: newInvoices,
