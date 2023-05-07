@@ -122,7 +122,40 @@ class InvoiceForm extends React.Component {
     this.handleCalculateTotal()
     this.setState({isOpen: true})
   };
-  closeModal = (event) => this.setState({isOpen: false});
+  closeModal = (event) => {
+    this.setState({isOpen: false})
+    // reset the form
+    this.setState({
+      isOpen: false,
+      currency: '$',
+      currentDate: '',
+      invoiceNumber: 1,
+      dateOfIssue: '',
+      billTo: '',
+      billToEmail: '',
+      billToAddress: '',
+      billFrom: '',
+      billFromEmail: '',
+      billFromAddress: '',
+      notes: '',
+      total: '0.00',
+      subTotal: '0.00',
+      taxRate: '',
+      taxAmmount: '0.00',
+      discountRate: '',
+      discountAmmount: '0.00'
+    });
+    this.state.items = [
+      {
+        id: 0,
+        name: '',
+        description: '',
+        price: '0.00',
+        quantity: 1
+      }
+    ];
+  };
+  
   render() {
     return (<Form onSubmit={this.openModal}>
       <Row>

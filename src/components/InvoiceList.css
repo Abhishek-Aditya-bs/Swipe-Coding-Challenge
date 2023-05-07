@@ -1,0 +1,7 @@
+.custom-modal-width {
+    width: 900%; /* Change the percentage to set the desired width */
+  }
+
+  .invoice-table td {
+    white-space: nowrap;
+  }

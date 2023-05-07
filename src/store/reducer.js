@@ -16,9 +16,14 @@ const initialState = {
             ),
           };
         case DELETE_INVOICE:
+          console.log('DELETE_INVOICE in reducer:', action.payload);
+          const newInvoices = state.invoices.filter(
+            (invoice) => invoice.invoiceId !== action.payload
+          );
+          console.log('New invoices:', newInvoices);
           return {
             ...state,
-            invoices: state.invoices.filter((invoice) => invoice.id !== action.payload),
+            invoices: newInvoices,
           };
         default:
           return state;
