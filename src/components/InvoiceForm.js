@@ -37,7 +37,7 @@ class InvoiceForm extends React.Component {
         id: 0,
         name: '',
         description: '',
-        price: '1.00',
+        price: '0.00',
         quantity: 1
       }
     ];
@@ -56,19 +56,20 @@ class InvoiceForm extends React.Component {
     var items = {
       id: id,
       name: '',
-      price: '1.00',
+      price: '0.00',
       description: '',
       quantity: 1
     }
     this.state.items.push(items);
     this.setState(this.state.items);
+    this.handleCalculateTotal();
   }
   handleCalculateTotal() {
     var items = this.state.items;
     var subTotal = 0;
 
-    items.map(function(items) {
-      subTotal = parseFloat(subTotal + (parseFloat(items.price).toFixed(2) * parseInt(items.quantity))).toFixed(2)
+    items.map((item, i) => {
+      subTotal += parseFloat(item.price) * parseFloat(item.quantity);
     });
 
     this.setState({
@@ -88,6 +89,7 @@ class InvoiceForm extends React.Component {
     });
 
   };
+
   onItemizedItemEdit(evt) {
     var item = {
       id: evt.target.id,
@@ -241,7 +243,8 @@ class InvoiceForm extends React.Component {
           </div>
         </Col>
       </Row>
-    </Form>)
+    </Form>
+    )
   }
 }
 

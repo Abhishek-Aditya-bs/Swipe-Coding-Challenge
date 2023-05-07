@@ -5,9 +5,13 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Modal from 'react-bootstrap/Modal';
-import { BiPaperPlane, BiCloudDownload } from "react-icons/bi";
+import { BiPaperPlane, BiCloudDownload, BiArchiveIn } from "react-icons/bi"; 
+import {AiFillDelete} from "react-icons/ai";
 import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf'
+import jsPDF from 'jspdf';
+import { connect } from 'react-redux';
+import { addInvoice } from '../store/actions';
+
 
 function GenerateInvoice() {
   html2canvas(document.querySelector("#invoiceCapture")).then((canvas) => {
@@ -29,8 +33,30 @@ function GenerateInvoice() {
 class InvoiceModal extends React.Component {
   constructor(props) {
     super(props);
+    this.handleSaveInvoice = this.handleSaveInvoice.bind(this);
   }
-  render() {
+  handleSaveInvoice() {
+    const newInvoice = {
+      invoiceId: Math.floor(Math.random() * 1000) + Date.now(),
+      items: this.props.items || [],
+      billedFrom: this.props.info.billFrom || '',
+      billedFromAddress: this.props.info.billFromAddress || '',
+      billedFromMail: this.props.info.billFromMail || '',
+      billedTo: this.props.info.billTo || '',
+      billedToAddress: this.props.info.billToAddress || '',
+      billedToMail: this.props.info.billToMail || '',
+      dateOfIssue: this.props.info.dateOfIssue || '',
+      currency: this.props.currency || '',
+      subTotal: this.props.subTotal || 0.00,
+      tax: this.props.taxAmmount || 0.00,
+      discount: this.props.discountAmmount || 0.00,
+      total: this.props.total || 0.00,
+  }
+    this.props.dispatch(addInvoice(newInvoice));
+    this.props.closeModal();
+}
+
+  render() {  
     return(
       <div>
         <Modal show={this.props.showModal} onHide={this.props.closeModal} size="lg" centered>
@@ -104,14 +130,14 @@ class InvoiceModal extends React.Component {
                     <td className="fw-bold" style={{width: '100px'}}>SUBTOTAL</td>
                     <td className="text-end" style={{width: '100px'}}>{this.props.currency} {this.props.subTotal}</td>
                   </tr>
-                  {this.props.taxAmmount != 0.00 &&
+                  {this.props.taxAmmount !== 0.00 &&
                     <tr className="text-end">
                       <td></td>
                       <td className="fw-bold" style={{width: '100px'}}>TAX</td>
                       <td className="text-end" style={{width: '100px'}}>{this.props.currency} {this.props.taxAmmount}</td>
                     </tr>
                   }
-                  {this.props.discountAmmount != 0.00 &&
+                  {this.props.discountAmmount !== 0.00 &&
                     <tr className="text-end">
                       <td></td>
                       <td className="fw-bold" style={{width: '100px'}}>DISCOUNT</td>
@@ -145,6 +171,22 @@ class InvoiceModal extends React.Component {
                 </Button>
               </Col>
             </Row>
+            </div>
+            <div className="pb-4 px-4">
+            <Row>
+              <Col md={6}>
+                <Button variant="outline-primary" className="d-block w-100" onClick={this.handleSaveInvoice}>
+                  <BiArchiveIn style={{width: '16px', height: '16px', marginTop: '-3px'}} className="me-2"/>
+                  Save Invoice
+                </Button>
+              </Col>
+              <Col md={6}>
+                <Button variant="outline-primary" className="d-block w-100 mt-3 mt-md-0" onClick={this.props.closeModal}>
+                  <AiFillDelete style={{width: '16px', height: '16px', marginTop: '-3px'}} className="me-2"/>
+                  Discard Invoice
+                </Button>
+              </Col>
+            </Row>
           </div>
         </Modal>
         <hr className="mt-4 mb-3"/>
@@ -153,4 +195,4 @@ class InvoiceModal extends React.Component {
   }
 }
 
-export default InvoiceModal;
+export default connect()(InvoiceModal);
