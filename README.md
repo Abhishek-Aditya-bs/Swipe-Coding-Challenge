@@ -21,8 +21,7 @@ and delete invoices).
 5. Implement a component to display a list of invoices.
 6. Make list of invoices as first screen and move the create to a new create invoice button
 7. In the invoice list, add buttons or options for view, edit, and delete operations.
-8. Ensure proper state management throughout the application by connecting components to the
-Redux store.
+8. Ensure proper state management throughout the application by connecting components to the Redux store.
 9. Make sure the application handles errors gracefully.
 10. Write clean, well-documented, and modular code.
 11. Implement copy to a new invoice from existing invoice functionality.
